@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report a Concern | SafeStreet Pro</title><link rel="stylesheet" href="style.css"></head><body><header><div class="brand">◆ SafeStreet Pro <small>Crime Pattern Analysis & Community Safety</small></div><nav><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a><a href="report.html">Report Crime</a><a href="about.html">About</a></nav></header><main class="formpage"><label>COMMUNITY INPUT / DEMO</label><h1>Report a concern</h1><p>This form demonstrates a report submission. It does not contact police or save data to a server.</p><form id="form"><label>Concern category<select id="category" required><option value="">Choose category</option><option>Theft</option><option>Assault</option><option>Burglary</option><option>Cybercrime</option><option>Other</option></select></label><label>Area<input id="area" required placeholder="e.g. Central"></label><label>Date<input id="date" type="date" required></label><label>Brief description<textarea id="description" required rows="5" placeholder="Describe the concern (do not include sensitive personal information)"></textarea></label><button class="button">Submit demo report →</button><p id="message" role="status"></p></form><p class="notice">For emergencies or actual crimes, contact local emergency services or police. Do not rely on this demo website.</p></main><footer>© 2026 SafeStreet Pro · Educational demo only</footer><script>
+document.getElementById('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const message = document.getElementById('message');
+  const payload = {
+    category: document.getElementById('category').value,
+    area: document.getElementById('area').value,
+    date: document.getElementById('date').value,
+    description: document.getElementById('description').value
+  };
+  try {
+    const response = await fetch('/api/report', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json();
+    message.textContent = result.message;
+    if (result.success) e.target.reset();
+  } catch (error) {
+    message.textContent = 'Unable to connect to the Python server.';
+  }
+});
+</script></body></html>
